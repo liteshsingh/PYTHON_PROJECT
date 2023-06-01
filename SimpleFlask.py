@@ -146,4 +146,4 @@ def convert_file(file_name, project_name, schema_name):
 
 if __name__ == '__main__':
     # Run the app server on localhost:4449
-    app.run('localhost', 4449)
+    app.run(debug=True)
