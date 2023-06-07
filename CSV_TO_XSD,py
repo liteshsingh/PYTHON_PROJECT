@@ -1,0 +1,85 @@
+import csv
+
+from xml.dom import minidom
+import os
+root = minidom.Document()
+
+xml = root.createElement('xsd:xml') 
+root.appendChild(xml)
+
+list_header = []
+list_header_values = []
+list_field_lengths = []
+dict_header = ""
+diction = {}
+
+with open('Book1.csv') as csv_file :
+    csv_reader = csv.Dictreader(csv_file,delimiter=",")
+    line_count = 0
+    curr_header_index = 0
+    for row in csv_reader:
+        if line_count == 0 :
+            print('nothing')
+        else:
+            if(row[0] == ""):
+                print('Inside else')
+                list_header_values.append(row[1])
+                list_field_lengths.append(row[8])
+
+
+                field = root.createElement('xsd:element')
+                field.setAttribute('name',row[1])
+                sequence.appendChild(field)
+                field_type = root.createElement('xsd:simpleType')
+                field.appendChild(field_type)
+                restr = root.createElement('xsd:restriction')
+                field_type.appendChild(restr)
+                #field_datatype = str(input("Enter field data type :"))
+                restr.setAttribute('base',"inhouse:AN")
+                #field_length = str(input("Enter field length :"))
+                fieldlength = root.createElement('xsd:length')
+                restr.appendChild(fieldlength)
+                fieldlength.setAttribute('value',row[7].split('.')[0])
+                
+                #print(row[1])
+            else:
+                print('Inside if')
+                list_header.append(row[0])
+                xml1 = root.createElement('xsd:element') 
+                xml.appendChild(xml1)
+                xml1.setAttribute('name',row[0])
+                ComplexType = root.createElement('xsd:complexType')
+                xml1.appendChild(ComplexType)
+                ComplexContent = root.createElement('xsd:complexContent')
+                ComplexType.appendChild(ComplexContent)
+                #extension_base = str(input("Enter extension Base : "))
+                extension = root.createElement('xsd:extension')
+                extension.setAttribute('base',"inhouse:Segment")
+                ComplexContent.appendChild(extension)
+                sequence = root.createElement('xsd:sequence')
+                extension.appendChild(sequence)
+                    
+                #curr_header_index = line_count
+                if(line_count == 1):
+                    print("line count 1")    
+                else:    
+                    diction[dict_header] = list_header_values
+                    
+
+                    #for list_item,list_length in zip(list_header_values, list_field_lengths):
+                        
+                        
+                dict_header = row[0]
+                #print(row[0])
+                
+                list_header_values.clear()
+                list_field_lengths.clear()
+        line_count = line_count +1
+
+
+xml_str = root.toprettyxml(indent ="\t") 
+  
+save_path_file = "schema_test.xml"
+  
+with open(save_path_file, "w") as f:
+    f.write(xml_str) 
