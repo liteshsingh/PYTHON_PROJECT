@@ -1,0 +1,5 @@
+# https://pypi.org/project/Flask
+Flask==2.2.3
+pandas
+numpy
+gunicorn
